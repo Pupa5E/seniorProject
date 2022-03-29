@@ -4,12 +4,21 @@ const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const dotenv = require('dotenv')
 const path = require('path')
+//view engine nunjucks
+const nunjucks = require('nunjucks')
 
 dotenv.config()
 const indexRouter = require('./routes')
 const userRouter = require('./routes/user')
 const app = express()
 app.set('port',process.env.PORT||3000)
+//view engine nunjucks
+app.set('view engine','html')
+
+nunjucks.configure('views', {
+    express: app,
+    watch: true,
+})
 
 app.use(morgan('dev'))
 app.use('/',express.static(path.join(__dirname,'public')))
@@ -38,6 +47,7 @@ app.use((err,req,res,next)=>{
     console.log(err)
     res.status(500).send(err.message)
 })
+
 app.listen(app.get('port'),()=>{
     console.log(app.get('port'),'번 포트에서 대기 중')
 })
