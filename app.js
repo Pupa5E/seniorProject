@@ -4,21 +4,16 @@ const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const dotenv = require('dotenv')
 const path = require('path')
-//view engine nunjucks
-const nunjucks = require('nunjucks')
+const nunjucks = require('ejs')
 
 dotenv.config()
 const indexRouter = require('./routes')
 const userRouter = require('./routes/user')
 const app = express()
 app.set('port',process.env.PORT||3000)
-//view engine nunjucks
-app.set('view engine','html')
+app.set('views',__dirname+'/views')
+app.set('view engine','ejs')
 
-nunjucks.configure('views', {
-    express: app,
-    watch: true,
-})
 
 app.use(morgan('dev'))
 app.use('/',express.static(path.join(__dirname,'public')))
